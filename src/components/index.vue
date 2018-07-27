@@ -77,7 +77,7 @@
                 <div class="wrap-box">
                     <ul class="img-list">
                         <li v-for="(itemSon, index) in item.datas" :key="itemSon.artID">
-                            <a href="#/site/goodsinfo/87" class="">
+                            <a :href="'#/site/goodsinfo/'+itemSon.artID" class="">
                                 <div class="img-box">
                                     <img v-lazy="itemSon.img_url">
                                 </div>

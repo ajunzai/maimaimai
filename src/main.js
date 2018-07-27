@@ -9,11 +9,10 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 // 引入lazyload
 import VueLazyload from 'vue-lazyload';
-const path = require('path');
 // 使用懒加载中间件
 Vue.use(VueLazyload, {
-  preLoad: 1.3,
-  loading: path.join(__dirname, 'src/assets/img/01.gif')
+  preLoad: 1.9,
+  loading: require('./assets/img/01.gif')
 });
 // 使用路由中间件
 Vue.use(VueRouter)
