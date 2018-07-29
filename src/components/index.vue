@@ -77,7 +77,8 @@
                 <div class="wrap-box">
                     <ul class="img-list">
                         <li v-for="(itemSon, index) in item.datas" :key="itemSon.artID">
-                            <a :href="'#/site/goodsinfo/'+itemSon.artID" class="">
+                            <!-- 做商品详情的路由 -->
+                            <router-link :to="'/goodsinfo/'+itemSon.artID" class="">
                                 <div class="img-box">
                                     <img v-lazy="itemSon.img_url">
                                 </div>
@@ -92,7 +93,7 @@
                                         </span>
                                     </p>
                                 </div>
-                            </a>
+                            </router-link>
                         </li>
                     </ul>
                 </div>
@@ -101,8 +102,7 @@
     </div>
 </template>
 <script>
-import moment from 'moment';
-import axios from 'axios';
+
     export default {
         data:function(){
             return{
@@ -112,20 +112,15 @@ import axios from 'axios';
                 goodlist:[]
             }
         },
-        filters:{
-            cutTime(value){
-                return moment(value).format('YYYY年MM月DD日');
-            }
-        },
         beforeMount(){
-            axios.get('http://47.106.148.205:8899/site/goods/gettopdata/goods').then(response=>{
+            this.axios.get('/site/goods/gettopdata/goods').then(response=>{
                 // console.log(response);
                 this.catelist = response.data.message.catelist;
                 this.sliderlist = response.data.message.sliderlist;
                 this.toplist = response.data.message.toplist;
                 // console.log(this);
             }).catch(error=>{console.log(error);});
-            axios.get('http://47.106.148.205:8899/site/goods/getgoodsgroup').then(response=>{
+            this.axios.get('/site/goods/getgoodsgroup').then(response=>{
                 // console.log(response);
                 this.goodlist = response.data.message;
             }).catch(error=>{console.log(error);});
