@@ -228,6 +228,7 @@
                     // console.log(response);
                     this.messageList = response.data.message;
                     this.totalCount =response.data.totalcount;
+                    
                 }).catch(error=>{console.log(error);})
             },
             // 页面改变
@@ -264,10 +265,13 @@
                 let gwcoffset = $("#buyButton .add").offset();
                 console.log(gwcoffset);
                 let overoffest = $(".icon-cart").offset();
-                $(".moveImg").show().css(gwcoffset).addClass('move').stop().animate(overoffest,500,()=>{
+                $(".moveImg").show().css(gwcoffset).addClass('move').stop(false,true).animate(overoffest,1000,()=>{
                     $('.moveImg').removeClass('move').hide();
                 })
-                this.$store.commit('increment',this.buyNum);
+                    this.$store.commit('increment',{
+                        goodid:this.$route.params.goodsid,
+                        goodNum:this.buyNum
+                    });
             }
         },
         components: {
@@ -281,7 +285,6 @@
         created() {
             this.getgoodsInfo();
             this.getcomments();
-            
         },
         watch: {
             $route(to, from) {
@@ -304,8 +307,8 @@
   text-align: center;
 }
 #zoomer-pane-container {
-    left: 377.5px ;
-    top: 30px;
+    left: 377.5px !important ;
+    top: 30px !important;
 }
 .moveImg{
     width: 40px;
@@ -315,8 +318,7 @@
 }
 .moveImg.move{
     transform: scale(.5,.5) rotateZ(3600deg);
-    opacity: .4;
-    transition: transform .5s,opacity .5s;
+    transition: transform 1s;
 }
 @import url('../../node_modules/font-awesome/css/font-awesome.min.css');
     /* @import url('../assets/lib/zoom/css/magnifier.css'); */
