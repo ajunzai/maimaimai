@@ -66,7 +66,8 @@
                                     </td>
                                     <td width="84" align="left">{{item.sell_price}}</td>
                                     <td width="104" align="center">
-                                        <el-input-number @change="countChange($event,index)" size="mini" :min="1" :max="10" v-model="item.buycount"></el-input-number>
+                                        <!-- <el-input-number @change="countChange($event,index)" size="mini" :min="1" :max="10" v-model="item.buycount"></el-input-number> -->
+                                        <numControl @change="change($event,index)" :count="item.buycount" :max="10" :min="1"></numControl>
                                     </td>
                                     <td width="104" align="left">{{item.sell_price*item.buycount}}</td>
                                     <td width="54" align="center">
@@ -104,7 +105,9 @@
                     <div class="cart-foot clearfix">
                         <div class="right-box">
                             <button class="button" onclick="javascript:location.href='/index.html';">继续购物</button>
-                            <button class="submit" onclick="formSubmit(this, '/', '/shopping.html');">立即结算</button>
+                            <router-link to="/payOrder">
+                                <button class="submit">立即结算</button>
+                            </router-link>
                         </div>
                     </div>
                     <!--购物车底部-->
@@ -135,6 +138,7 @@
     </div>
 </template>
 <script>
+import numControl from "./buyCar_numControl.vue";
 export default {
     name:"buyCar",
     data:function(){
@@ -208,15 +212,15 @@ export default {
         }
     },
     methods:{
-        countChange(value,index){
-            console.log(value,index);
-            // console.log(this.$store.state.buyList[index]);
-            console.log(this.message[index].id);
-            this.$store.commit('changeCount',{
-                goodid: this.message[index].id,
-                goodNum:value
-            })
-        },
+        // countChange(value,index){
+        //     console.log(value,index);
+        //     // console.log(this.$store.state.buyList[index]);
+        //     console.log(this.message[index].id);
+        //     this.$store.commit('changeCount',{
+        //         goodid: this.message[index].id,
+        //         goodNum:value
+        //     })
+        // },
         del(){
             // 在删除当前页面的id前同步到vuex的仓库中
             this.$store.commit('delete',this.message[this.deleteIndex].id)
@@ -224,7 +228,17 @@ export default {
             this.message.splice(this.deleteIndex,1);
             this.modalShow = false;
             
+        },
+        change(count,index){
+            this.message[index].buycount = count;
+            this.$store.commit("changeCount",{
+                goodid:this.message[index].id,
+                goodNum:count
+            })
         }
+    },
+    components:{
+        numControl
     }
 }
 </script>

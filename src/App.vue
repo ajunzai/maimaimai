@@ -11,16 +11,16 @@
             <a target="_blank" href="#"></a>
           </div>
           <div id="menu" class="right-box">
-            <span style="display: none;">
-              <a href="" class="">登录</a>
+            <span v-if="$store.state.isLogin==false">
+              <router-link to="/login">登录</router-link>
               <strong>|</strong>
               <a href="" class="">注册</a>
               <strong>|</strong>
             </span>
-            <span>
+            <span v-if="$store.state.isLogin">
               <a href="" class="">会员中心</a>
               <strong>|</strong>
-              <a>退出</a>
+              <a @click="logout">退出</a>
               <strong>|</strong>
             </span>
             <router-link to="/buyCar">
@@ -135,6 +135,28 @@ import $ from 'jquery'
         $(".out",	this).stop().animate({'top':	'0px'},		300); // move up - show
         $(".over",	this).stop().animate({'top':	'-48px'},	300); // move up - hide
       });
+    },
+    created(){
+
+    },
+    methods:{
+      logout(){
+        this.axios.get("/site/account/logout")
+        .then(response=>{
+          console.log(response);
+          if(response.data.status==0){
+            this.$Message.success("欢迎回来");
+            // 修改vuex
+            this.$store.commit("changeLogin",false);
+            setTimeout(()=>{
+
+              this.$router.push('/index')
+            },500)
+          }
+        }).catch(err=>{
+          console.log(err);
+        })
+      }
     }
   }
 </script>
